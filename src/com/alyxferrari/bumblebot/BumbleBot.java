@@ -1,5 +1,6 @@
 package com.alyxferrari.bumblebot;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
@@ -13,11 +14,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.time.OffsetDateTime;
+
 import org.apache.commons.lang3.StringUtils;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Emote;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
@@ -26,9 +31,13 @@ public class BumbleBot {
 	public static final ArrayList<String> messageIds = new ArrayList<String>();
 	public static final ArrayList<String> pos = new ArrayList<String>();
 	public static final ArrayList<String> neg = new ArrayList<String>();
+	public static int based = 0;
+	public static int fuck = 0;
+	public static OffsetDateTime lastBumbleMessage = null;
 	public static void main(String[] args) throws Exception {
 		BufferedReader pos = new BufferedReader(new InputStreamReader(new FileInputStream("bumblepos.txt")));
 		BufferedReader neg = new BufferedReader(new InputStreamReader(new FileInputStream("bumbleneg.txt")));
+		BufferedReader counter = new BufferedReader(new InputStreamReader(new FileInputStream("bumblecounter.txt")));
 		String line;
 		while ((line = pos.readLine()) != null) {
 			BumbleBot.pos.add(line);
@@ -36,6 +45,9 @@ public class BumbleBot {
 		while ((line = neg.readLine()) != null) {
 			BumbleBot.neg.add(line);
 		}
+		based = Integer.parseInt(counter.readLine());
+		fuck = Integer.parseInt(counter.readLine());
+		counter.close();
 		pos.close();
 		neg.close();
 		JDABuilder builder = JDABuilder.createDefault(API_TOKEN);
@@ -168,23 +180,82 @@ public class BumbleBot {
 							mevent.getChannel().sendMessage("You don't have permission to do that.").queue();
 						}
 						return;
+					} else if (mevent.getMessage().getContentRaw().startsWith("bb;stats")) {
+						mevent.getChannel().sendMessage("**Bumble Bot stats:**\n`bumble is based` : " + based + "\n`fuck you` : " + fuck).queue();
 					} else if (mevent.getMessage().getContentRaw().startsWith("bb;help")) {
-						mevent.getChannel().sendMessage("**Bumble Bot help:**\n`bb;addpos phrase` : Adds `phrase` to positive phrase list\n`bb;addneg phrase` : Adds `phrase` to negative phrase list\n`bb;delpos phrase` : Removes `phrase` from positive phrase list\n`bb;delneg phrase` : Removes `phrase` from negative phrase list").queue();
+						mevent.getChannel().sendMessage("**Bumble Bot help:**\n`bb;addpos phrase` : Adds `phrase` to positive phrase list\n`bb;addneg phrase` : Adds `phrase` to negative phrase list\n`bb;delpos phrase` : Removes `phrase` from positive phrase list\n`bb;delneg phrase` : Removes `phrase` from negative phrase list\n`bb;stats` : Shows how many times Bumble Bot has said the positive and negative messages").queue();
 						return;
 					}
 					for (int i = 0; i < neg.size(); i++) {
 						if (StringUtils.containsIgnoreCase(mevent.getMessage().getContentRaw(), neg.get(i))) {
 							mevent.getChannel().sendMessage("fuck you").queue();
+							fuck++;
+							new File("bumblecounter.txt").delete();
+							try {
+								BufferedWriter writer = new BufferedWriter(new FileWriter(new File("bumblecounter.txt")));
+								writer.write(based + "\n" + fuck);
+								writer.flush();
+								writer.close();
+							} catch (IOException ex) {
+								ex.printStackTrace();
+							}
 							return;
 						}
 					}
 					for (int i = 0; i < pos.size(); i++) {
 						if (StringUtils.containsIgnoreCase(mevent.getMessage().getContentRaw(), pos.get(i))) {
 							mevent.getChannel().sendMessage("bumble is based").queue();
+							based++;
+							new File("bumblecounter.txt").delete();
+							try {
+								BufferedWriter writer = new BufferedWriter(new FileWriter(new File("bumblecounter.txt")));
+								writer.write(based + "\n" + fuck);
+								writer.flush();
+								writer.close();
+							} catch (IOException ex) {
+								ex.printStackTrace();
+							}
 						}
+					}
+					List<User> mentioned = mevent.getMessage().getMentionedUsers();
+					for (int i = 0; i < mentioned.size(); i++) {
+						if (mentioned.get(i).getName().equals("Bumble Bot")) {
+							List<Emote> bumbles = mevent.getGuild().getEmotesByName("bumble", false);
+							System.out.println(mevent.getGuild().getEmotesByName("heartpulse", false).size());
+							if (bumbles.size() > 0) {
+								mevent.getMessage().addReaction(bumbles.get(0)).queue();
+							} else {
+								mevent.getMessage().addReaction("❤️");
+							}
+						}
+					}
+					System.out.println(mevent.getMessage().getMember().getId());
+					if (mevent.getMessage().getMember().getId().equals("275116146426904577")) {
+						OffsetDateTime created = mevent.getMessage().getTimeCreated();
+						if (lastBumbleMessage != null) {
+							if (created.getYear() != lastBumbleMessage.getYear() || created.getDayOfMonth() != lastBumbleMessage.getDayOfMonth() || difference(lastBumbleMessage.getHour(), created.getHour()) > 6) {
+								mevent.getChannel().sendMessage("babe wake up bumble sent a new message").queue();
+							}
+						}
+						lastBumbleMessage = mevent.getMessage().getTimeCreated();
 					}
 				}
 			}
+		}
+		public static int difference(int hour1, int hour2) {
+			if (hour2 > hour1) {
+				return hour2-hour1;
+			} else if (hour2 < hour1) {
+				int ret = 0;
+				for (int i = hour1; i < 24; i++) {
+					ret++;
+				}
+				for (int i = 0; i < hour2; i++) {
+					ret++;
+				}
+				return ret;
+			}
+			return 0;
 		}
 	}
 }
