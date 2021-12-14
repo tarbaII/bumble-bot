@@ -27,7 +27,7 @@ import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
 public class BumbleBot {
-	public static final String API_TOKEN = "redacted :lipbite:";
+	public static String API_TOKEN = "";
 	public static final ArrayList<String> messageIds = new ArrayList<String>();
 	public static final ArrayList<String> pos = new ArrayList<String>();
 	public static final ArrayList<String> neg = new ArrayList<String>();
@@ -38,6 +38,7 @@ public class BumbleBot {
 		BufferedReader pos = new BufferedReader(new InputStreamReader(new FileInputStream("bumblepos.txt")));
 		BufferedReader neg = new BufferedReader(new InputStreamReader(new FileInputStream("bumbleneg.txt")));
 		BufferedReader counter = new BufferedReader(new InputStreamReader(new FileInputStream("bumblecounter.txt")));
+		BufferedReader api = new BufferedReader(new InputStreamReader(new FileInputStream("apikey.txt")));
 		String line;
 		while ((line = pos.readLine()) != null) {
 			BumbleBot.pos.add(line);
@@ -47,6 +48,8 @@ public class BumbleBot {
 		}
 		based = Integer.parseInt(counter.readLine());
 		fuck = Integer.parseInt(counter.readLine());
+		API_TOKEN = api.readLine();
+		api.close();
 		counter.close();
 		pos.close();
 		neg.close();
