@@ -225,11 +225,10 @@ public class BumbleBot {
 							if (bumbles.size() > 0) {
 								mevent.getMessage().addReaction(bumbles.get(0)).queue();
 							} else {
-								mevent.getMessage().addReaction("❤️");
+								mevent.getMessage().addReaction("U+2764");
 							}
 						}
 					}
-					System.out.println(mevent.getMessage().getMember().getId());
 					if (mevent.getMessage().getMember().getId().equals("275116146426904577")) {
 						OffsetDateTime created = mevent.getMessage().getTimeCreated();
 						if (lastBumbleMessage != null) {
@@ -238,6 +237,12 @@ public class BumbleBot {
 							}
 						}
 						lastBumbleMessage = mevent.getMessage().getTimeCreated();
+					}
+					if (mevent.getMessage().getContentRaw().equalsIgnoreCase("joe")) {
+						mevent.getChannel().sendMessage("joe mama").queue();
+					}
+					if (mevent.getMessage().getContentRaw().equalsIgnoreCase("i can't believe steve jobs died of ligma") || mevent.getMessage().getContentRaw().equalsIgnoreCase("i cant believe steve jobs died of ligma") || mevent.getMessage().getContentRaw().equalsIgnoreCase("who the hell is steve jobs")) {
+						mevent.getChannel().sendMessage("ligma balls").queue();
 					}
 				}
 			}
