@@ -183,10 +183,41 @@ public class BumbleBot {
 							mevent.getChannel().sendMessage("You don't have permission to do that.").queue();
 						}
 						return;
+					} else if (mevent.getMessage().getContentRaw().startsWith("bb;listpos")) {
+						String poss = "";
+						for (int i = 0; i < pos.size(); i++) {
+							poss += i == pos.size()-1 ? pos.get(i) : pos.get(i) + "\n";
+						}
+						mevent.getChannel().sendMessage("**Bumble Bot positive phrases:**\n" + poss).queue();
+						return;
+					} else if (mevent.getMessage().getContentRaw().startsWith("bb;listneg")) {
+						String negs = "";
+						for (int i = 0; i < neg.size(); i++) {
+							negs += i == neg.size()-1 ? neg.get(i) : neg.get(i) + "\n";
+						}
+						mevent.getChannel().sendMessage("**Bumble Bot positive phrases:**\n" + negs).queue();
+						return;
+					} else if (mevent.getMessage().getContentRaw().startsWith("bb;quit") || mevent.getMessage().getContentRaw().startsWith("bb;exit")) {
+						mevent.getChannel().sendMessage("Quitting...").queue();
+						try {Thread.sleep(500);} catch (InterruptedException ex) {}
+						System.exit(0);
+					} else if (mevent.getMessage().getContentRaw().startsWith("bb;say")) {
+						String say = "";
+						String[] contents = mevent.getMessage().getContentRaw().split(" ");
+						if (contents.length < 2 || !mevent.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+							mevent.getMessage().delete().queue();
+							return;
+						}
+						for (int i = 1; i < contents.length; i++) {
+							say += contents[i] + " ";
+						}
+						mevent.getMessage().delete().queue();
+						mevent.getChannel().sendMessage(say).queue();
+						return;
 					} else if (mevent.getMessage().getContentRaw().startsWith("bb;stats")) {
 						mevent.getChannel().sendMessage("**Bumble Bot stats:**\n`bumble is based` : " + based + "\n`fuck you` : " + fuck).queue();
 					} else if (mevent.getMessage().getContentRaw().startsWith("bb;help")) {
-						mevent.getChannel().sendMessage("**Bumble Bot help:**\n`bb;addpos phrase` : Adds `phrase` to positive phrase list\n`bb;addneg phrase` : Adds `phrase` to negative phrase list\n`bb;delpos phrase` : Removes `phrase` from positive phrase list\n`bb;delneg phrase` : Removes `phrase` from negative phrase list\n`bb;stats` : Shows how many times Bumble Bot has said the positive and negative messages").queue();
+						mevent.getChannel().sendMessage("**Bumble Bot help:**\n`bb;stats` : Shows how many times Bumble Bot has said the positive and negative messages\n`bb;listpos` : Lists positive phrases\n`bb;listneg` : Lists negative phrases").queue();
 						return;
 					}
 					for (int i = 0; i < neg.size(); i++) {
@@ -206,7 +237,9 @@ public class BumbleBot {
 						}
 					}
 					for (int i = 0; i < pos.size(); i++) {
+						System.out.println(pos.get(i));
 						if (StringUtils.containsIgnoreCase(mevent.getMessage().getContentRaw(), pos.get(i))) {
+							System.out.println("yuh");
 							mevent.getChannel().sendMessage("bumble is based").queue();
 							based++;
 							new File("bumblecounter.txt").delete();
