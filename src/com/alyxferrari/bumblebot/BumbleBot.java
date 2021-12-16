@@ -236,10 +236,23 @@ public class BumbleBot {
 							return;
 						}
 					}
+					if (mevent.getMessage().getContentRaw().equalsIgnoreCase("bumble")) {
+						mevent.getChannel().sendMessage("is based").queue();
+						based++;
+						new File("bumblecounter.txt").delete();
+						try {
+							BufferedWriter writer = new BufferedWriter(new FileWriter(new File("bumblecounter.txt")));
+							writer.write(based + "\n" + fuck);
+							writer.flush();
+							writer.close();
+						} catch (IOException ex) {
+							ex.printStackTrace();
+						}
+						return;
+					}
 					for (int i = 0; i < pos.size(); i++) {
 						System.out.println(pos.get(i));
 						if (StringUtils.containsIgnoreCase(mevent.getMessage().getContentRaw(), pos.get(i))) {
-							System.out.println("yuh");
 							mevent.getChannel().sendMessage("bumble is based").queue();
 							based++;
 							new File("bumblecounter.txt").delete();
@@ -251,6 +264,7 @@ public class BumbleBot {
 							} catch (IOException ex) {
 								ex.printStackTrace();
 							}
+							return;
 						}
 					}
 					List<User> mentioned = mevent.getMessage().getMentionedUsers();
