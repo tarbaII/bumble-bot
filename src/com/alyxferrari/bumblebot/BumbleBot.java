@@ -1,6 +1,8 @@
 package com.alyxferrari.bumblebot;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
@@ -22,6 +24,9 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Emote;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -293,6 +298,20 @@ public class BumbleBot {
 					}
 					if (mevent.getMessage().getContentRaw().equalsIgnoreCase("i can't believe steve jobs died of ligma") || mevent.getMessage().getContentRaw().equalsIgnoreCase("i cant believe steve jobs died of ligma") || mevent.getMessage().getContentRaw().equalsIgnoreCase("who the hell is steve jobs")) {
 						mevent.getChannel().sendMessage("ligma balls").queue();
+					}
+					if (mevent.getMessage().getContentRaw().startsWith("fuck you") || mevent.getMessage().getContentRaw().startsWith("Fuck you") || mevent.getMessage().getContentRaw().equalsIgnoreCase("fuck you")) {
+						MessageChannel channel = mevent.getChannel();
+						channel.getHistoryBefore(mevent.getMessage(), 1).queue(new Consumer<MessageHistory>() {
+							@Override
+							public void accept(MessageHistory history) {
+								List<Message> messages = history.getRetrievedHistory();
+								if (messages.size() == 1) {
+									if (messages.get(0).getAuthor().getName().equals("Bumble Bot")) {
+										mevent.getChannel().sendMessage("well fuck you too then").queue();
+									}
+								}
+							}
+						});
 					}
 				}
 			}
