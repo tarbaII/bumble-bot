@@ -225,6 +225,17 @@ public class BumbleBot {
 						mevent.getChannel().sendMessage("**Bumble Bot help:**\n`bb;stats` : Shows how many times Bumble Bot has said the positive and negative messages\n`bb;listpos` : Lists positive phrases\n`bb;listneg` : Lists negative phrases").queue();
 						return;
 					}
+					List<User> mentioned = mevent.getMessage().getMentionedUsers();
+					for (int i = 0; i < mentioned.size(); i++) {
+						if (mentioned.get(i).getName().equals("Bumble Bot")) {
+							List<Emote> bumbles = mevent.getGuild().getEmotesByName("bumble", false);
+							if (bumbles.size() > 0) {
+								mevent.getMessage().addReaction(bumbles.get(0)).queue();
+							} else {
+								mevent.getMessage().addReaction("U+2764");
+							}
+						}
+					}
 					for (int i = 0; i < neg.size(); i++) {
 						if (StringUtils.containsIgnoreCase(mevent.getMessage().getContentStripped(), neg.get(i))) {
 							mevent.getChannel().sendMessage("fuck you").queue();
@@ -284,18 +295,6 @@ public class BumbleBot {
 								ex.printStackTrace();
 							}
 							return;
-						}
-					}
-					List<User> mentioned = mevent.getMessage().getMentionedUsers();
-					for (int i = 0; i < mentioned.size(); i++) {
-						if (mentioned.get(i).getName().equals("Bumble Bot")) {
-							List<Emote> bumbles = mevent.getGuild().getEmotesByName("bumble", false);
-							System.out.println(mevent.getGuild().getEmotesByName("heartpulse", false).size());
-							if (bumbles.size() > 0) {
-								mevent.getMessage().addReaction(bumbles.get(0)).queue();
-							} else {
-								mevent.getMessage().addReaction("U+2764");
-							}
 						}
 					}
 					if (mevent.getMessage().getMember().getId().equals("275116146426904577")) {
