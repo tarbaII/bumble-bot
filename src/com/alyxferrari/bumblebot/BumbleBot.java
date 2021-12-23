@@ -226,7 +226,7 @@ public class BumbleBot {
 						return;
 					}
 					for (int i = 0; i < neg.size(); i++) {
-						if (StringUtils.containsIgnoreCase(mevent.getMessage().getContentRaw(), neg.get(i))) {
+						if (StringUtils.containsIgnoreCase(mevent.getMessage().getContentStripped(), neg.get(i))) {
 							mevent.getChannel().sendMessage("fuck you").queue();
 							fuck++;
 							new File("bumblecounter.txt").delete();
@@ -241,7 +241,7 @@ public class BumbleBot {
 							return;
 						}
 					}
-					if (mevent.getMessage().getContentRaw().equalsIgnoreCase("bumble is based")) {
+					if (StringUtils.containsIgnoreCase(mevent.getMessage().getContentStripped(), "bumble is based")) {
 						mevent.getChannel().sendMessage("so true bestie").queue();
 						based++;
 						new File("bumblecounter.txt").delete();
@@ -255,7 +255,7 @@ public class BumbleBot {
 						}
 						return;
 					}
-					if (mevent.getMessage().getContentRaw().equalsIgnoreCase("bumble")) {
+					if (mevent.getMessage().getContentStripped().equalsIgnoreCase("bumble")) {
 						mevent.getChannel().sendMessage("is based").queue();
 						based++;
 						new File("bumblecounter.txt").delete();
@@ -271,7 +271,7 @@ public class BumbleBot {
 					}
 					for (int i = 0; i < pos.size(); i++) {
 						System.out.println(pos.get(i));
-						if (StringUtils.containsIgnoreCase(mevent.getMessage().getContentRaw(), pos.get(i))) {
+						if (StringUtils.containsIgnoreCase(mevent.getMessage().getContentStripped(), pos.get(i))) {
 							mevent.getChannel().sendMessage("bumble is based").queue();
 							based++;
 							new File("bumblecounter.txt").delete();
@@ -307,13 +307,13 @@ public class BumbleBot {
 						}
 						lastBumbleMessage = mevent.getMessage().getTimeCreated();
 					}
-					if (mevent.getMessage().getContentRaw().equalsIgnoreCase("joe")) {
+					if (mevent.getMessage().getContentStripped().equalsIgnoreCase("joe")) {
 						mevent.getChannel().sendMessage("joe mama").queue();
 					}
-					if (mevent.getMessage().getContentRaw().equalsIgnoreCase("i can't believe steve jobs died of ligma") || mevent.getMessage().getContentRaw().equalsIgnoreCase("i cant believe steve jobs died of ligma") || mevent.getMessage().getContentRaw().equalsIgnoreCase("who the hell is steve jobs")) {
+					if (mevent.getMessage().getContentStripped().equalsIgnoreCase("i can't believe steve jobs died of ligma") || mevent.getMessage().getContentStripped().equalsIgnoreCase("i cant believe steve jobs died of ligma") || mevent.getMessage().getContentStripped().equalsIgnoreCase("who the hell is steve jobs")) {
 						mevent.getChannel().sendMessage("ligma balls").queue();
 					}
-					if (mevent.getMessage().getContentRaw().startsWith("fuck you") || mevent.getMessage().getContentRaw().startsWith("Fuck you") || mevent.getMessage().getContentRaw().equalsIgnoreCase("fuck you")) {
+					if (mevent.getMessage().getContentStripped().startsWith("fuck you") || mevent.getMessage().getContentStripped().startsWith("Fuck you") || mevent.getMessage().getContentStripped().equalsIgnoreCase("fuck you")) {
 						MessageChannel channel = mevent.getChannel();
 						channel.getHistoryBefore(mevent.getMessage(), 1).queue(new Consumer<MessageHistory>() {
 							@Override
