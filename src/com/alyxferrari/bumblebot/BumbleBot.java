@@ -241,6 +241,20 @@ public class BumbleBot {
 							return;
 						}
 					}
+					if (mevent.getMessage().getContentRaw().equalsIgnoreCase("bumble is based")) {
+						mevent.getChannel().sendMessage("so true bestie").queue();
+						based++;
+						new File("bumblecounter.txt").delete();
+						try {
+							BufferedWriter writer = new BufferedWriter(new FileWriter(new File("bumblecounter.txt")));
+							writer.write(based + "\n" + fuck);
+							writer.flush();
+							writer.close();
+						} catch (IOException ex) {
+							ex.printStackTrace();
+						}
+						return;
+					}
 					if (mevent.getMessage().getContentRaw().equalsIgnoreCase("bumble")) {
 						mevent.getChannel().sendMessage("is based").queue();
 						based++;
