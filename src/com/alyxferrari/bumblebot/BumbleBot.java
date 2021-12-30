@@ -64,11 +64,13 @@ public class BumbleBot {
 		JDA jda = builder.build();
 		jda.awaitReady();
 		System.out.println("Logged in and ready");
-		JFrame frame = new JFrame("bumble bot");
-		frame.setSize(400, 200);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().add(BorderLayout.CENTER, new JLabel("bumble bot started"));
-		frame.setVisible(true);
+		if (args.length > 0 && args[0].equalsIgnoreCase("-gfx")) {
+			JFrame frame = new JFrame("bumble bot");
+			frame.setSize(400, 200);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.getContentPane().add(BorderLayout.CENTER, new JLabel("bumble bot started"));
+			frame.setVisible(true);
+		}
 	}
 	public static class BumbleListener implements EventListener {
 		@Override
@@ -281,7 +283,6 @@ public class BumbleBot {
 						return;
 					}
 					for (int i = 0; i < pos.size(); i++) {
-						System.out.println(pos.get(i));
 						if (StringUtils.containsIgnoreCase(mevent.getMessage().getContentStripped(), pos.get(i))) {
 							mevent.getChannel().sendMessage("bumble is based").queue();
 							based++;
