@@ -1,8 +1,7 @@
-package com.alyxferrari.bumblebot;
+package com.alyxferrari.bots;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.time.OffsetDateTime;
-
 import org.apache.commons.lang3.StringUtils;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -39,7 +37,7 @@ public class BumbleBot {
 	public static int based = 0;
 	public static int fuck = 0;
 	public static OffsetDateTime lastBumbleMessage = null;
-	public static void main(String[] args) throws Exception {
+	public static void start(String[] args) throws Exception {
 		BufferedReader pos = new BufferedReader(new InputStreamReader(new FileInputStream("bumblepos.txt")));
 		BufferedReader neg = new BufferedReader(new InputStreamReader(new FileInputStream("bumbleneg.txt")));
 		BufferedReader counter = new BufferedReader(new InputStreamReader(new FileInputStream("bumblecounter.txt")));
@@ -59,7 +57,7 @@ public class BumbleBot {
 		pos.close();
 		neg.close();
 		JDABuilder builder = JDABuilder.createDefault(API_TOKEN);
-		builder.setActivity(Activity.watching("over Bumble"));
+		builder.setActivity(Activity.playing("with farts"));
 		builder.addEventListeners(new BumbleListener());
 		JDA jda = builder.build();
 		jda.awaitReady();
