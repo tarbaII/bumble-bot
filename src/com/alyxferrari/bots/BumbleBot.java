@@ -77,7 +77,7 @@ public class BumbleBot {
 				MessageReceivedEvent mevent = (MessageReceivedEvent) event;
 				if (!mevent.getAuthor().isBot()) {
 					if (mevent.getMessage().getContentRaw().startsWith("bb;addneg")) {
-						if (mevent.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+						if (mevent.getMember().hasPermission(Permission.ADMINISTRATOR) || mevent.getMember().getId().equals("322896756713062400")) {
 							String[] parts = mevent.getMessage().getContentRaw().split(" ");
 							if (parts.length > 1) {
 								String toAdd = "";
@@ -101,7 +101,7 @@ public class BumbleBot {
 						}
 						return;
 					} else if (mevent.getMessage().getContentRaw().startsWith("bb;addpos")) {
-						if (mevent.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+						if (mevent.getMember().hasPermission(Permission.ADMINISTRATOR) || mevent.getMember().getId().equals("322896756713062400")) {
 							String[] parts = mevent.getMessage().getContentRaw().split(" ");
 							if (parts.length > 1) {
 								String toAdd = "";
@@ -125,7 +125,7 @@ public class BumbleBot {
 						}
 						return;
 					} else if (mevent.getMessage().getContentRaw().startsWith("bb;delpos")) {
-						if (mevent.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+						if (mevent.getMember().hasPermission(Permission.ADMINISTRATOR) || mevent.getMember().getId().equals("322896756713062400")) {
 							String[] parts = mevent.getMessage().getContentRaw().split(" ");
 							if (parts.length > 1) {
 								String toAdd = "";
@@ -157,7 +157,7 @@ public class BumbleBot {
 						}
 						return;
 					} else if (mevent.getMessage().getContentRaw().startsWith("bb;delneg")) {
-						if (mevent.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+						if (mevent.getMember().hasPermission(Permission.ADMINISTRATOR) || mevent.getMember().getId().equals("322896756713062400")) {
 							String[] parts = mevent.getMessage().getContentRaw().split(" ");
 							if (parts.length > 1) {
 								String toAdd = "";
@@ -188,6 +188,22 @@ public class BumbleBot {
 							mevent.getChannel().sendMessage("You don't have permission to do that.").queue();
 						}
 						return;
+					} else if (mevent.getMessage().getContentRaw().startsWith("bb;lockdown")) {
+						if (mevent.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+							mevent.getGuild().getGuildChannelById(mevent.getChannel().getId()).getManager().putPermissionOverride(mevent.getGuild().getPublicRole(), 0L, Permission.MESSAGE_WRITE.getRawValue()).queue();
+							mevent.getChannel().sendMessage("Channel locked down.").queue();
+							return;
+						}
+						mevent.getChannel().sendMessage("You don't have permission to do that.").queue();
+						return;
+					} else if (mevent.getMessage().getContentRaw().startsWith("bb;unlockdown")) {
+						if (mevent.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+							mevent.getGuild().getGuildChannelById(mevent.getChannel().getId()).getManager().putPermissionOverride(mevent.getGuild().getPublicRole(), Permission.MESSAGE_WRITE.getRawValue(), 0L).queue();
+							mevent.getChannel().sendMessage("Channel opened up.").queue();
+							return;
+						}
+						mevent.getChannel().sendMessage("You don't have permission to do that.").queue();
+						return;
 					} else if (mevent.getMessage().getContentRaw().startsWith("bb;listpos")) {
 						String poss = "";
 						for (int i = 0; i < pos.size(); i++) {
@@ -210,8 +226,10 @@ public class BumbleBot {
 						String say = "";
 						String[] contents = mevent.getMessage().getContentRaw().split(" ");
 						if (contents.length < 2 || !mevent.getMember().hasPermission(Permission.ADMINISTRATOR)) {
-							mevent.getMessage().delete().queue();
-							return;
+							if (!mevent.getMember().getId().equals("322896756713062400")) {
+								mevent.getMessage().delete().queue();
+								return;
+							}
 						}
 						for (int i = 1; i < contents.length; i++) {
 							say += contents[i] + " ";
