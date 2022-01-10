@@ -391,7 +391,7 @@ public class BumbleBot {
 														@Override
 														public void accept(Void t) {
 															System.out.println("poopy doop");
-															mevent.getChannel().sendMessage(getEmbed("Ban successful", "Successfully banned user with ID " + contents[1] + ".", Color.red).build()).queue();
+															mevent.getChannel().sendMessage(getEmbed("Ban successful", "Successfully banned user with ID " + contents[1] + ".", Color.green).build()).queue();
 														}
 													}, new Consumer<Throwable>() {
 														@Override
@@ -534,6 +534,8 @@ public class BumbleBot {
 					} else if (mevent.getMessage().getContentRaw().startsWith("bb;help")) {
 						mevent.getChannel().sendMessage(getEmbed("**Bumble Bot help**", "`bb;stats` : Shows how many times Bumble Bot has said the positive and negative messages\n`bb;listpos` : Lists positive phrases\n`bb;listneg` : Lists negative phrases", Color.green).build()).queue();
 						return;
+					} else if (mevent.getMessage().getContentRaw().startsWith("bb;")) {
+						mevent.getChannel().sendMessage(getEmbed("**Unknown command**", "Run `bb;help` for a list of commands.", Color.red).build()).queue();
 					}
 					List<User> mentioned = mevent.getMessage().getMentionedUsers();
 					for (int i = 0; i < mentioned.size(); i++) {
