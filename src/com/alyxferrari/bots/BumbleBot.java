@@ -241,18 +241,27 @@ public class BumbleBot {
 												reason += contents[i] + " ";
 											}
 										}
-										mevent.getGuild().ban(user, Integer.parseInt(contents[2]), reason.equals("") ? "No reason provided" : reason).queue(new Consumer<Void>() {
-											@Override
-											public void accept(Void t) {
-												mevent.getChannel().sendMessage(getEmbed("Ban successful", "Successfully banned user with ID " + contents[1] + ".", Color.green).build()).queue();
+										try {
+											mevent.getGuild().ban(user, Integer.parseInt(contents[2]), reason.equals("") ? "No reason provided" : reason).queue(new Consumer<Void>() {
+												@Override
+												public void accept(Void t) {
+													mevent.getChannel().sendMessage(getEmbed("Ban successful", "Successfully banned user with ID " + contents[1] + ".", Color.green).build()).queue();
+												}
+											}, new Consumer<Throwable>() {
+												@Override
+												public void accept(Throwable t) {
+													t.printStackTrace();
+													mevent.getChannel().sendMessage(getEmbed("Ban failed", "Failed to ban user with ID " + contents[1] + ".\n\nException:\n" + t.getClass().getCanonicalName() + ": " + t.getMessage(), Color.red).build()).queue();
+												}
+											});
+										} catch (IllegalArgumentException ex) {
+											if (ex.getMessage().equalsIgnoreCase("Deletion Days must not be bigger than 7.")) {
+												mevent.getChannel().sendMessage(getEmbed("Ban failed", "Deletion days must not be above 7 days.", Color.red).build()).queue();
+											} else {
+												mevent.getChannel().sendMessage(getEmbed("Ban failed", "Failed to ban user with ID " + contents[1] + ".", Color.red).build()).queue();
 											}
-										}, new Consumer<Throwable>() {
-											@Override
-											public void accept(Throwable t) {
-												t.printStackTrace();
-												mevent.getChannel().sendMessage(getEmbed("Ban failed", "Failed to ban user with ID " + contents[1] + ".\n\nException:\n" + t.getClass().getCanonicalName() + ": " + t.getMessage(), Color.red).build()).queue();
-											}
-										});
+											return;
+										}
 									}
 								}, new Consumer<Throwable>() {
 									@Override
@@ -377,19 +386,28 @@ public class BumbleBot {
 													}
 												}
 												System.out.println("shid fard");
-												mevent.getGuild().ban(member, 0, reason.equals("") ? "No reason provided" : reason).queue(new Consumer<Void>() {
-													@Override
-													public void accept(Void t) {
-														System.out.println("poopy doop");
-														mevent.getChannel().sendMessage(getEmbed("Ban successful", "Successfully banned user with ID " + contents[1] + ".", Color.red).build()).queue();
-													}
-												}, new Consumer<Throwable>() {
-													@Override
-													public void accept(Throwable t) {
-														System.out.println("poopy fard shid");
+												try {
+													mevent.getGuild().ban(member, 0, reason.equals("") ? "No reason provided" : reason).queue(new Consumer<Void>() {
+														@Override
+														public void accept(Void t) {
+															System.out.println("poopy doop");
+															mevent.getChannel().sendMessage(getEmbed("Ban successful", "Successfully banned user with ID " + contents[1] + ".", Color.red).build()).queue();
+														}
+													}, new Consumer<Throwable>() {
+														@Override
+														public void accept(Throwable t) {
+															System.out.println("poopy fard shid");
+															mevent.getChannel().sendMessage(getEmbed("Ban failed", "Failed to ban user with ID " + contents[1] + ".", Color.red).build()).queue();
+														}
+													});
+												} catch (IllegalArgumentException ex) {
+													if (ex.getMessage().equalsIgnoreCase("Deletion Days must not be bigger than 7.")) {
+														mevent.getChannel().sendMessage(getEmbed("Ban failed", "Deletion days must not be above 7 days.", Color.red).build()).queue();
+													} else {
 														mevent.getChannel().sendMessage(getEmbed("Ban failed", "Failed to ban user with ID " + contents[1] + ".", Color.red).build()).queue();
 													}
-												});
+													return;
+												}
 												return;
 											}
 										}
