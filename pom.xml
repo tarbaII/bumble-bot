@@ -4,7 +4,7 @@
   <artifactId>bumble-bot</artifactId>
   <version>1.0</version>
   <name>bumble-bot</name>
-  <description>Discord bot that says "bumble is based" whenever anyone says "bumble"</description>
+  <description></description>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
