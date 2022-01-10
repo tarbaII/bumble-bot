@@ -369,20 +369,24 @@ public class BumbleBot {
 										List<Role> roles = member.getRoles();
 										for (int i = 0; i < roles.size(); i++) {
 											if (roles.get(i).getName().equalsIgnoreCase("three strikes")) {
+												System.out.println("fart shid");
 												String reason = "";
 												if (contents.length > 2) {
 													for (int x = 2; x < contents.length; x++) {
 														reason += contents[x] + " ";
 													}
 												}
-												mevent.getGuild().ban(member, 30, reason.equals("") ? "No reason provided" : reason).queue(new Consumer<Void>() {
+												System.out.println("shid fard");
+												mevent.getGuild().ban(member, 0, reason.equals("") ? "No reason provided" : reason).queue(new Consumer<Void>() {
 													@Override
 													public void accept(Void t) {
+														System.out.println("poopy doop");
 														mevent.getChannel().sendMessage(getEmbed("Ban successful", "Successfully banned user with ID " + contents[1] + ".", Color.red).build()).queue();
 													}
 												}, new Consumer<Throwable>() {
 													@Override
 													public void accept(Throwable t) {
+														System.out.println("poopy fard shid");
 														mevent.getChannel().sendMessage(getEmbed("Ban failed", "Failed to ban user with ID " + contents[1] + ".", Color.red).build()).queue();
 													}
 												});
@@ -404,7 +408,7 @@ public class BumbleBot {
 														@Override
 														public void accept(Void t) {
 															mevent.getChannel().sendMessage(getEmbed(null, "Successfully gave a strike to user with ID " + contents[1] + ".", Color.green).build()).queue();
-															member.getUser().openPrivateChannel().flatMap(channel -> channel.sendMessage("A moderator has given you a strike in channel " + mevent.getChannel().getName() + ".\nHere is their explanation for their action:\n" + (finalReason.equals("") ? "No reason provided" : finalReason))).queue();
+															member.getUser().openPrivateChannel().flatMap(channel -> channel.sendMessage("A moderator has given you a strike in channel `#" + mevent.getChannel().getName() + "`.\nHere is their explanation for their action:\n" + (finalReason.equals("") ? "No reason provided" : finalReason))).queue();
 															// DM user explaining why
 														}
 													});
@@ -435,7 +439,7 @@ public class BumbleBot {
 														@Override
 														public void accept(Void t) {
 															mevent.getChannel().sendMessage(getEmbed(null, "Successfully gave a strike to user with ID " + contents[1] + ".", Color.green).build()).queue();
-															member.getUser().openPrivateChannel().flatMap(channel -> channel.sendMessage("A moderator has given you a strike in channel " + mevent.getChannel().getName() + ".\nHere is their explanation for their action:\n" + (finalReason.equals("") ? "No reason provided" : finalReason))).queue();
+															member.getUser().openPrivateChannel().flatMap(channel -> channel.sendMessage("A moderator has given you a strike in channel `#" + mevent.getChannel().getName() + "`.\nHere is their explanation for their action:\n" + (finalReason.equals("") ? "No reason provided" : finalReason))).queue();
 															// DM user explaining why
 														}
 													});
