@@ -1,2 +1,6 @@
 eclipse.preferences.version=1
 encoding//src/com/alyxferrari/bots/BumbleBot.java=UTF-8
+encoding//src/com/alyxferrari/bots/bumblecogs/FallbackModule.java=UTF-8
+encoding//src/com/alyxferrari/bots/bumblecogs/QuitModule.java=UTF-8
+encoding//src/com/alyxferrari/bots/bumblecogs/moderation/LockdownModule.java=UTF-8
+encoding//src/com/alyxferrari/bots/bumblecogs/moderation/UnlockdownModule.java=UTF-8
