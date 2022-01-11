@@ -59,6 +59,7 @@ public class BumbleBot {
 			new LockdownModule(),
 			new UnlockdownModule(),
 			new StrikeModule(),
+			new AmogusModule.AmogusCommandModule(),
 			new FallbackModule()
 	};
 	public static final BotModule[] nonReturning = {
