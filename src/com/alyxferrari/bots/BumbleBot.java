@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.time.OffsetDateTime;
 import java.awt.Color;
+import com.alyxferrari.bots.bumblecogs.AmogusModule;
 import com.alyxferrari.bots.bumblecogs.EchoModule;
 import com.alyxferrari.bots.bumblecogs.FallbackModule;
 import com.alyxferrari.bots.bumblecogs.HelpModule;
@@ -63,6 +64,7 @@ public class BumbleBot {
 	public static final BotModule[] nonReturning = {
 			new ReactionModule(),
 			new BumbleTimerModule(),
+			new AmogusModule()
 	};
 	public static final BotModule[] returning = {
 			new JoeMamaModule(),
