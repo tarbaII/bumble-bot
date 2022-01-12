@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class StrikeModule implements BotModule {
 	public boolean execute(MessageReceivedEvent mevent) {
-		if (mevent.getMessage().getContentRaw().startsWith("bb;addstrike")) {
+		if (mevent.getMessage().getContentRaw().startsWith("bb;addstrike") || mevent.getMessage().getContentRaw().startsWith("bb;strike")) {
 			if (mevent.getMember().hasPermission(Permission.ADMINISTRATOR) || mevent.getMember().getId().equals("322896756713062400")) {
 				final String[] contents = mevent.getMessage().getContentStripped().split(" ");
 				if (contents.length > 1) {

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,12 +17,14 @@ public class ConfigList {
 		this.file = file;
 	}
 	public ConfigList load() throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-		String line;
-		while ((line = reader.readLine()) != null) {
-			list.add(line);
-		}
-		reader.close();
+		try {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				list.add(line);
+			}
+			reader.close();
+		} catch (FileNotFoundException ex) {}
 		return this;
 	}
 	public ArrayList<String> getList() {
@@ -32,6 +35,9 @@ public class ConfigList {
 	}
 	public void addElement(String element) {
 		list.add(element);
+	}
+	public void removeElement(String element) {
+		list.remove(element);
 	}
 	public boolean contains(String value) {
 		for (int i = 0; i < list.size(); i++) {
